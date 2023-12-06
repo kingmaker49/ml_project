@@ -1,0 +1,21 @@
+name: Great Learning Action
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  run-flask:
+    runs-on: ubuntu-latest
+    setps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+    - run: pip install --trusted-host pypi.python.org Flask requests scikit-learn joblib
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/dicker-build-push@v4
+      with:
+        image: sharmaarnab0900/glproject
+        registry: docker.io
+        username: ${{secrets.DOCKER_USERNAME}}
+        password: ${{secrets.DOCKER_PASSWORD}}
+
