@@ -1,23 +1,23 @@
-# name: Great Learning Action
+name: Great Learning Action
 
-# on:
-#   push:
-#     branches: [ main ]
+on:
+  push:
+    branches: [ main ]
 
-# jobs:
-#   run-flask:
-#     runs-on: ubuntu-latest
-#     setps:
-#     - uses: actions/checkout@v2
-#     - uses: actions/setup-python@v2
-#     - run: pip install -r requirements.txt
-#     - name: Build and Push Docker Image
-#       uses: mr-smithers-excellent/dicker-build-push@v4
-#       with:
-#         image: sharmaarnab0900/glproject
-#         registry: docker.io
-#         username: ${{secrets.DOCKER_USERNAME}}
-#         password: ${{secrets.DOCKER_PASSWORD}}
+jobs:
+  run-flask:
+    runs-on: ubuntu-latest
+    setps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+    - run: pip install -r requirements.txt
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/docker-build-push@v4
+      with:
+        image: sharmaarnab0900/glproject
+        registry: docker.io
+        username: ${{secrets.DOCKER_USERNAME}}
+        password: ${{secrets.DOCKER_PASSWORD}}
 
 
 # name: Build and Push Docker Image
@@ -55,38 +55,38 @@
 #         docker push $REGISTRY/$IMAGE_NAME:latest
 
 
-name: Build and Push Docker Image
+# name: Build and Push Docker Image
 
-on:
-  push:
-    branches:
-      - main  # Change this to the branch you want to trigger the workflow on
+# on:
+#   push:
+#     branches:
+#       - main  # Change this to the branch you want to trigger the workflow on
 
-jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
+# jobs:
+#   build-and-push:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v2
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+#     - name: Set up Docker Buildx
+#       uses: docker/setup-buildx-action@v1
 
-    - name: Build and push Docker image
-      env:
-        REGISTRY: docker.io  # Change this to your registry (e.g., docker.io for Docker Hub)
-        IMAGE_NAME: myflaskapp
-        TAG: latest
-      run: |
-        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin $REGISTRY
+#     - name: Build and push Docker image
+#       env:
+#         REGISTRY: docker.io  # Change this to your registry (e.g., docker.io for Docker Hub)
+#         IMAGE_NAME: myflaskapp
+#         TAG: latest
+#       run: |
+#         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin $REGISTRY
 
-        docker buildx create --use
-        docker buildx inspect --bootstrap
+#         docker buildx create --use
+#         docker buildx inspect --bootstrap
 
-        docker buildx build --platform linux/amd64,linux/arm64 -t $REGISTRY/$IMAGE_NAME:$TAG -t $REGISTRY/$IMAGE_NAME:latest .
+#         docker buildx build --platform linux/amd64,linux/arm64 -t $REGISTRY/$IMAGE_NAME:$TAG -t $REGISTRY/$IMAGE_NAME:latest .
 
-        docker push $REGISTRY/$IMAGE_NAME:$TAG
-        docker push $REGISTRY/$IMAGE_NAME:latest
+#         docker push $REGISTRY/$IMAGE_NAME:$TAG
+#         docker push $REGISTRY/$IMAGE_NAME:latest
 
 
