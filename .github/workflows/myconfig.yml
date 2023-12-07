@@ -3,7 +3,7 @@ name: Great learning Actions
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
