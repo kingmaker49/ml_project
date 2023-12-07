@@ -1,20 +1,13 @@
-# Use an official Python runtime as a parent image
-FROM python:3.8-slim
-
-# Set the working directory to /app
-WORKDIR /app
-
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --trusted-host pypi.python.org Flask requests scikit-learn joblib
-
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
-
-# Define environment variable
-ENV NAME World
-
-# Run app.py when the container launches
-CMD ["python", "app.py"]
+FROM python:3.9
+WORKDIR /opt/source-code/
+COPY . /opt/source-code/
+RUN pip install Flask
+RUN pip install requests
+RUN pip install joblib
+RUN pip install scikit-learn
+RUN pip install scipy
+RUN pip install Jinja2
+RUN pip install requests
+RUN pip install pandas
+RUN pip install numpy
+CMD [ "python", "app.py"]
